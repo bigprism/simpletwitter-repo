@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      {% for post in posts %}
+      <div class="card mb-4">
+        <div class="card-header">
+          <a href="{% url 'post_detail' post.pk %}">{{ post.author }}</a>
+        </div>
+        <div class="card-body">
+          <p>{{ post.content }}</p>
+          <div class="d-flex justify-content-between">
+            <div>
+              <a href="{% url 'like_post' post.pk %}" class="btn btn-primary">Like</a>
+              <a href="{% url 'comment_on_post' post.pk %}" class="btn btn-success">Comment</a>
+            </div>
+            <div>
+              {{ post.likes.count }} likes
+              {{ post.comments.count }} comments
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header">
+          Create a new post
+        </div>
+        <div class="card-body">
+          <form action="{% url 'create_post' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="content">Content</label>
+              <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
